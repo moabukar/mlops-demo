@@ -1,5 +1,9 @@
 # CoderCo Tech Test
 
+## What is this?
+
+This is a simple FastAPI application that uses a YOLO model to detect objects in images.
+
 ## Prerequisites
 
 - Docker
@@ -74,4 +78,10 @@ curl -X POST -F "file=@app/test_car.jpg" http://ml-app.localhost/detect
 ## Cleanup
 helm uninstall ml-web-service
 kind delete cluster
+```
+
+## Full Local K8s Setup
+
+```sh
+make all-in-one
 ```
