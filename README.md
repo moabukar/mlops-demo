@@ -1,4 +1,4 @@
-# Neurolab Tech Test
+# CoderCo Tech Test
 
 ## Prerequisites
 
