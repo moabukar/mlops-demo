@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  repository: your-docker-repo/ml-web-service
+  repository: <reg-name>/ml-web-service
   tag: latest
   pullPolicy: IfNotPresent
 
