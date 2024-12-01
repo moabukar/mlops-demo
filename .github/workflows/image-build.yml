@@ -28,18 +28,18 @@ jobs:
       run: |
         registry="moabukar"
         sha=$(git rev-parse --short HEAD)
-        primary_tag="${registry}/tm:${sha}"
+        primary_tag="${registry}/ml-app:${sha}"
 
         docker build -t $primary_tag -f Dockerfile .
         docker push $primary_tag
 
         current_branch=$(git rev-parse --abbrev-ref HEAD)
         if [ "$current_branch" = "main" ]; then
-          retention_tag="${registry}/tm:rc-${sha}"
+          retention_tag="${registry}/ml-app:rc-${sha}"
           docker tag $primary_tag $retention_tag
           docker push $retention_tag
         else
-          retention_tag="${registry}/tm:alpha-${sha}"
+          retention_tag="${registry}/ml-app:alpha-${sha}"
           docker tag $primary_tag $retention_tag
           docker push $retention_tag
         fi

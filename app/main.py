@@ -1,28 +1,51 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from ultralytics import YOLO
+import uvicorn
 from PIL import Image
 import io
+from typing import List, Dict
 
-app = FastAPI()
+app = FastAPI(title="ML Web Service")
+# Load the YOLO model at startup
+model = YOLO('yolov8n.pt')
 
-# Load YOLOv8 model
-model = YOLO("yolov8n.pt")  # Change model file as needed
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "ML Web Service is running"}
 
-@app.post("/predict/")
-async def predict(file: UploadFile = File(...)):
+@app.post("/detect")
+async def detect_objects(file: UploadFile = File(...)) -> Dict:
+    # Validate file type
+    if not file.content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    
     try:
-        # Load the image
+        # Read image file
         contents = await file.read()
         image = Image.open(io.BytesIO(contents))
         
-        # Perform detection
+        # Perform prediction
         results = model(image)
         
-        # Parse the results
-        detections = [
-            {"class": result["class"], "confidence": result["confidence"]}
-            for result in results[0].boxes.xyxy.cpu().numpy()
-        ]
-        return {"detections": detections}
+        # Extract predictions
+        predictions = []
+        for result in results:
+            boxes = result.boxes
+            for box in boxes:
+                pred = {
+                    "class": result.names[int(box.cls[0])],
+                    "confidence": float(box.conf[0]),
+                    "bbox": box.xyxy[0].tolist()
+                }
+                predictions.append(pred)
+        
+        return {
+            "filename": file.filename,
+            "predictions": predictions
+        }
+        
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
