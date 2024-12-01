@@ -1,13 +1,20 @@
 replicaCount: 1
 
 image:
-  repository: ml-web-service
-  tag: latest
+  repository: moabukar/ml-app
+  tag: "3bcc279"
   pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
   port: 8000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  host: "ml-app.localhost"  # Changed to .localhost for local testing
+  path: "/"
+  pathType: Prefix
 
 resources:
   limits:
