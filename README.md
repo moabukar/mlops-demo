@@ -1,91 +1,99 @@
-# ML Tech Test
+# 🤖 ML Tech Test
 
-## What is this?
+## 🎯 What is this?
 
-This is a simple FastAPI application that uses a YOLO model to detect objects in images.
+A FastAPI application that uses YOLOv8 model to detect objects in images. The service can be run locally, in containers, or deployed to Kubernetes.
 
-## Prerequisites
+## 🛠️ Prerequisites
 
 - Docker
-- Kind
+- Kind (Kubernetes in Docker)
 - Helm
+- Python 3.9+
 
-## Make automations
-
-```sh
-
-- `make setup` - Create Kind cluster and install nginx-ingress
-- `make build` - Build Docker image
-- `make load` - Load Docker image into Kind cluster
-- `make deploy` - Deploy application using Helm
-- `make test` - Test the deployed application
-- `make clean` - Remove deployment and cluster
-- `make all-in-one` - Run complete setup
-- `make redeploy` - Rebuild and redeploy the application
-- `make logs` - View application logs
-- `make status` - Check deployment status
-```
-
-## Local Setup
+## 🚀 Quick Start
 
 ```bash
+# Full automated setup with Kubernetes
+make all-in-one
 
+# Local development setup
 python3 -m venv venv
 source venv/bin/activate
-
 pip3 install -r requirements.txt
-
 python3 app/main.py
 ```
 
-## Containers Setup
-
-```sh
-docker build -t ml-web-service .
-
-docker run -p 8000:8000 ml-web-service
-
-curl http://localhost:8000/
-
-cd app
-curl -X POST -F "file=@test_car.jpg" http://localhost:8000/detect
-
-```
-
-## Kind setup
+## 🔧 Available Make Commands
 
 ```bash
-kind create cluster --config kind.yml
+make setup     # Create Kind cluster and install nginx-ingress
+make deploy    # Deploy application using Helm
+make test      # Test the deployed application
+make clean     # Remove deployment and cluster
+make logs      # View application logs
+make status    # Check deployment status
+```
 
+## 🐳 Container Setup
+
+```bash
+# Build and run locally
+docker build -t ml-web-service .
+docker run -p 8000:8000 ml-web-service
+
+# Test the container
+curl http://localhost:8000/
+curl -X POST -F "file=@app/test_car.jpg" http://localhost:8000/detect
+```
+
+## ☸️ Manual Kubernetes Setup
+
+```bash
+# Create cluster and setup ingress
+kind create cluster --config kind.yml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 
+# Wait for ingress controller
 kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=90s
 
-kind load docker-image ml-web-app:3bcc279
-
+# Deploy application
 helm install ml-web-service chart/
 
-# Check all resources
-kubectl get pods,svc,ingress
+# Test deployment
+curl http://ml-app.localhost:9090/
+curl -X POST -F "file=@app/test_car.jpg" http://ml-app.localhost:9090/detect
 
-# Test the endpoints
-curl http://ml-app.localhost/
-curl -X POST -F "file=@app/test_car.jpg" http://ml-app.localhost/detect
-
-## Cleanup
+# Cleanup
 helm uninstall ml-web-service
 kind delete cluster
 ```
 
-## Full Local K8s Setup
+## 📝 API Endpoints
 
-```sh
-make all-in-one
+- `GET /` - Health check
+- `POST /detect` - Object detection endpoint
+  - Accepts: multipart/form-data with 'file' field
+  - Returns: JSON with detected objects and confidence scores
+
+## 🖼️ Example
+
+![Local Test Example](images/local-test.png)
+
+## 📊 Sample Response
+
+```json
+{
+  "filename": "test_car.jpg",
+  "predictions": [
+    {
+      "class": "car",
+      "confidence": 0.95,
+      "bbox": [100, 200, 300, 400]
+    }
+  ]
+}
 ```
-
-## Local Test
-
-![image](images/local-test.png)
