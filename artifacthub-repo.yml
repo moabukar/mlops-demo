@@ -1,0 +1,8 @@
+apiVersion: artifacthub.io/v1
+kind: Repository
+name: mlops-demo
+displayName: MLOps Demo Charts
+description: A collection of Helm charts for MLOps services.
+homeURL: https://github.com/moabukar/mlops-demo
+sources:
+  - https://github.com/moabukar/mlops-demo
