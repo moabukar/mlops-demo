@@ -82,6 +82,13 @@ setup:
 build:
 	@echo "Building Docker image..."
 	docker build -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
+	docker run -p 8000:8000 $(DOCKER_IMAGE):$(DOCKER_TAG)
+
+.PHONY: build-rancher
+build-rancher:
+	@echo "Building Docker image..."
+	nerdctl build -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
+	nerdctl run -p 8000:8000 $(DOCKER_IMAGE):$(DOCKER_TAG)
 
 .PHONY: load
 load:
