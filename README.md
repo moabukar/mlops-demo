@@ -23,6 +23,9 @@ source venv/bin/activate
 pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
 pip3 install -r requirements.txt
 python3 app/main.py
+
+curl http://localhost:8000/
+curl -X POST -F "file=@app/test_car.jpg" http://localhost:8000/detect
 ```
 
 ## 🔧 Available Make Commands
