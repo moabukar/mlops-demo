@@ -26,7 +26,7 @@ pip3 install -r requirements.txt
 python3 app/main.py
 
 curl http://localhost:8000/
-curl -X POST -F "file=@app/test_car.jpg" http://localhost:8000/detect
+curl -X POST -F "file=@images/test_car.jpg" http://localhost:8000/detect
 ```
 
 ## 🔧 Available Make Commands
@@ -49,7 +49,7 @@ docker run -p 8000:8000 ml-web-service
 
 # Test the container
 curl http://localhost:8000/
-curl -X POST -F "file=@app/test_car.jpg" http://localhost:8000/detect
+curl -X POST -F "file=@images/test_car.jpg" http://localhost:8000/detect
 ```
 
 ## ☸️ Manual Kubernetes Setup
@@ -70,7 +70,7 @@ helm install ml-web-service chart/
 
 # Test deployment
 curl http://ml-app.localhost:9090/
-curl -X POST -F "file=@app/test_car.jpg" http://ml-app.localhost:9090/detect
+curl -X POST -F "file=@images/test_car.jpg" http://ml-app.localhost:9090/detect
 
 # Cleanup
 helm uninstall ml-web-service

@@ -83,7 +83,7 @@ test:
 	@echo "\nTesting health endpoint (http://ml-app.localhost:$(HOST_PORT))..."
 	curl -s http://ml-app.localhost:$(HOST_PORT)/
 	@echo "\nTesting ML endpoint with test image and saving to k8s-test-output.json..."
-	@curl -s -X POST -F "file=@app/test_car.jpg" http://ml-app.localhost:$(HOST_PORT)/detect > k8s-test-output.json
+	@curl -s -X POST -F "file=@images/test_car.jpg" http://ml-app.localhost:$(HOST_PORT)/detect > k8s-test-output.json
 	@echo "\nPrediction results saved to k8s-test-output.json"
 	@echo "\nContents of k8s-test-output.json:"
 	@cat k8s-test-output.json | jq '.' || cat k8s-test-output.json
