@@ -20,6 +20,7 @@ make all-in-one
 # Local development setup
 python3 -m venv venv
 source venv/bin/activate
+## Install PyTorch CPU version
 pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
 pip3 install -r requirements.txt
 python3 app/main.py
