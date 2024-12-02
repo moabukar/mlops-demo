@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
+
 jobs:
   publish-helm-chart:
     runs-on: ubuntu-latest
