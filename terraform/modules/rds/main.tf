@@ -1,5 +1,5 @@
 module "db" {
-  source = "terraform-aws-modules/rds/aws"
+  source  = "terraform-aws-modules/rds/aws"
   version = "~> 6.0"
 
   identifier = var.identifier
