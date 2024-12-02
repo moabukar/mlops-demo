@@ -24,7 +24,7 @@ jobs:
 
     - name: Package Helm Chart
       run: |
-        cd chart
+        cd charts/mlops
         helm package .
         helm repo index . --url https://moabukar.github.io/mlops-demo
 
