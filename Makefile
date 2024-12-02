@@ -6,14 +6,6 @@ DOCKER_TAG ?= latest
 HOST_PORT ?= 9090
 HTTPS_PORT ?= 9443
 
-# .PHONY: check-docker
-# check-docker:
-# 	@echo "Checking Docker..."
-# 	@if ! docker info > /dev/null 2>&1; then \
-# 		echo "Docker is not running. Please start Docker."; \
-# 		exit 1; \
-# 	fi
-
 # .PHONY: clean-ports
 # clean-ports:
 # 	@echo "Cleaning up any existing Docker containers using our ports..."
@@ -21,6 +13,42 @@ HTTPS_PORT ?= 9443
 # 	-docker container ls -a -q | xargs -r docker container rm
 # 	@echo "Waiting for ports to be released..."
 # 	@sleep 5
+
+#########################
+# Python
+#########################
+
+.PHONY: python-local
+python-local:
+	@echo "Setting up the application locally..."
+	cd app && python3 -m venv venv && \
+	source venv/bin/activate && \
+	pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu && \
+	pip3 install --upgrade pip && \
+	pip3 install -r requirements.txt && \
+	python3 main.py
+	@echo "Local setup complete. The app is running at http://127.0.0.1:8000"
+
+.PHONY: python-clean
+python-clean:
+	@echo "Cleaning up Python virtual environment and related files..."
+	@rm -rf app/venv
+	@find app -type f -name "*.pyc" -delete
+	@find app -type d -name "__pycache__" -exec rm -rf {} +
+	@echo "Python cleanup complete."
+
+
+#########################
+# Container & K8s
+#########################
+
+# .PHONY: check-docker
+# check-docker:
+# 	@echo "Checking Docker..."
+# 	@if ! docker info > /dev/null 2>&1; then \
+# 		echo "Docker is not running. Please start Docker."; \
+# 		exit 1; \
+# 	fi
 
 .PHONY: clean
 clean:
