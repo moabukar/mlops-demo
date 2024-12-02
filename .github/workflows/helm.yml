@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - charts/mlops/**
 
 permissions:
   contents: write
@@ -32,4 +34,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: chart
+        publish_dir: charts/mlops
