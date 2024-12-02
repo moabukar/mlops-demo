@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ML Object Detection</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ML Object Detection</h1>
+        <form action="/detect" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required><br>
+            <button type="submit">Detect</button>
+        </form>
+        
+        {% if result is not none %}
+        <div class="result">
+            <h2>Results for {{ filename }}</h2>
+            <ul>
+                {% for prediction in result %}
+                <li>
+                    <strong>Class:</strong> {{ prediction['class'] }}<br>
+                    <strong>Confidence:</strong> {{ prediction['confidence'] }}<br>
+                    <strong>Bounding Box:</strong> {{ prediction['bbox'] }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
