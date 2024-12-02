@@ -6,24 +6,24 @@ DOCKER_TAG ?= latest
 HOST_PORT ?= 9090
 HTTPS_PORT ?= 9443
 
-.PHONY: check-docker
-check-docker:
-	@echo "Checking Docker..."
-	@if ! docker info > /dev/null 2>&1; then \
-		echo "Docker is not running. Please start Docker."; \
-		exit 1; \
-	fi
+# .PHONY: check-docker
+# check-docker:
+# 	@echo "Checking Docker..."
+# 	@if ! docker info > /dev/null 2>&1; then \
+# 		echo "Docker is not running. Please start Docker."; \
+# 		exit 1; \
+# 	fi
 
-.PHONY: clean-ports
-clean-ports:
-	@echo "Cleaning up any existing Docker containers using our ports..."
-	-docker container ls -q | xargs -r docker container stop
-	-docker container ls -a -q | xargs -r docker container rm
-	@echo "Waiting for ports to be released..."
-	@sleep 5
+# .PHONY: clean-ports
+# clean-ports:
+# 	@echo "Cleaning up any existing Docker containers using our ports..."
+# 	-docker container ls -q | xargs -r docker container stop
+# 	-docker container ls -a -q | xargs -r docker container rm
+# 	@echo "Waiting for ports to be released..."
+# 	@sleep 5
 
 .PHONY: clean
-clean: clean-ports
+clean:
 	@echo "Cleaning up..."
 	-helm uninstall $(HELM_RELEASE_NAME) 2>/dev/null || true
 	-kind delete cluster --name $(CLUSTER_NAME) 2>/dev/null || true
@@ -31,7 +31,7 @@ clean: clean-ports
 	@sleep 5
 
 .PHONY: setup
-setup: check-docker clean
+setup:
 	@echo "Creating Kind cluster..."
 	kind create cluster --name $(CLUSTER_NAME) --config kind.yml
 	@echo "Installing NGINX Ingress Controller..."
@@ -50,15 +50,15 @@ setup: check-docker clean
 	@echo "Verifying Ingress Controller..."
 	kubectl get pods -n ingress-nginx
 
-# .PHONY: build
-# build:
-# 	@echo "Building Docker image..."
-# 	docker build -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
+.PHONY: build
+build:
+	@echo "Building Docker image..."
+	docker build -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
 
-# .PHONY: load
-# load:
-# 	@echo "Loading Docker image into Kind cluster..."
-# 	kind load docker-image $(DOCKER_IMAGE):$(DOCKER_TAG) --name $(CLUSTER_NAME)
+.PHONY: load
+load:
+	@echo "Loading Docker image into Kind cluster..."
+	kind load docker-image $(DOCKER_IMAGE):$(DOCKER_TAG) --name $(CLUSTER_NAME)
 
 .PHONY: deploy
 deploy:

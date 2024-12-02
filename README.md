@@ -85,3 +85,7 @@ kind delete cluster
 ```sh
 make all-in-one
 ```
+
+## Local Test
+
+![image](images/local-test.png)
