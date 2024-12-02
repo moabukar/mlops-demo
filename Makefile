@@ -107,7 +107,7 @@ load:
 .PHONY: deploy
 deploy:
 	@echo "Deploying application using Helm..."
-	helm install $(HELM_RELEASE_NAME) chart/ || helm upgrade $(HELM_RELEASE_NAME) chart/
+	helm install $(HELM_RELEASE_NAME) charts/mlops || helm upgrade $(HELM_RELEASE_NAME) charts/mlops
 
 .PHONY: all-in-one
 all-in-one: setup deploy
