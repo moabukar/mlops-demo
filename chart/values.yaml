@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: moabukar/ml-app
-  tag: "3bcc279"
+  tag: "664a3c9"
   pullPolicy: IfNotPresent
 
 service:

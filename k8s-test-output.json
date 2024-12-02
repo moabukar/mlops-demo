@@ -1,1 +1,61 @@
-{"filename":"test_car.jpg","predictions":[{"class":"bus","confidence":0.8734487891197205,"bbox":[22.871217727661133,231.27734375,805.002685546875,756.8404541015625]},{"class":"person","confidence":0.8656912446022034,"bbox":[48.550437927246094,398.55230712890625,245.34559631347656,902.7026977539062]},{"class":"person","confidence":0.852835476398468,"bbox":[669.472900390625,392.1859436035156,809.7201538085938,877.0354614257812]},{"class":"person","confidence":0.8252246975898743,"bbox":[221.5172882080078,405.79864501953125,344.9706115722656,857.53662109375]},{"class":"person","confidence":0.26111194491386414,"bbox":[0.0,550.525146484375,63.00693130493164,873.4429321289062]},{"class":"stop sign","confidence":0.25506895780563354,"bbox":[0.058164238929748535,254.45938110351562,32.55740737915039,324.8741760253906]}]}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ML Object Detection</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ML Object Detection</h1>
+        <form action="/detect" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required><br>
+            <button type="submit">Detect</button>
+        </form>
+        
+        
+        <div class="result">
+            <h2>Results for test_car.jpg</h2>
+            <ul>
+                
+                <li>
+                    <strong>Class:</strong> bus<br>
+                    <strong>Confidence:</strong> 0.8734487891197205<br>
+                    <strong>Bounding Box:</strong> [22.871217727661133, 231.27734375, 805.002685546875, 756.8404541015625]
+                </li>
+                
+                <li>
+                    <strong>Class:</strong> person<br>
+                    <strong>Confidence:</strong> 0.8656912446022034<br>
+                    <strong>Bounding Box:</strong> [48.550437927246094, 398.55230712890625, 245.34559631347656, 902.7026977539062]
+                </li>
+                
+                <li>
+                    <strong>Class:</strong> person<br>
+                    <strong>Confidence:</strong> 0.852835476398468<br>
+                    <strong>Bounding Box:</strong> [669.472900390625, 392.1859436035156, 809.7201538085938, 877.0354614257812]
+                </li>
+                
+                <li>
+                    <strong>Class:</strong> person<br>
+                    <strong>Confidence:</strong> 0.8252246975898743<br>
+                    <strong>Bounding Box:</strong> [221.5172882080078, 405.79864501953125, 344.9706115722656, 857.53662109375]
+                </li>
+                
+                <li>
+                    <strong>Class:</strong> person<br>
+                    <strong>Confidence:</strong> 0.26111194491386414<br>
+                    <strong>Bounding Box:</strong> [0.0, 550.525146484375, 63.00693130493164, 873.4429321289062]
+                </li>
+                
+                <li>
+                    <strong>Class:</strong> stop sign<br>
+                    <strong>Confidence:</strong> 0.25506895780563354<br>
+                    <strong>Bounding Box:</strong> [0.058164238929748535, 254.45938110351562, 32.55740737915039, 324.8741760253906]
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -8,8 +8,7 @@ from PIL import Image
 import io
 from typing import Dict
 
-app = FastAPI(title="ML Web Service")
-# Load the YOLO model at startup
+app = FastAPI(title="ML Image detection")
 model = YOLO('yolov8n.pt')
 
 # Setup for Jinja2 templates

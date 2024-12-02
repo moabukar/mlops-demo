@@ -3,7 +3,7 @@ CLUSTER_NAME ?= ml-cluster
 HELM_RELEASE_NAME ?= ml-web-service
 DOCKER_IMAGE ?= ml-web-service
 DOCKER_TAG ?= latest
-HOST_PORT ?= 9090
+HOST_PORT ?= 8000
 HTTPS_PORT ?= 9443
 
 # .PHONY: clean-ports
@@ -60,21 +60,30 @@ clean:
 
 .PHONY: setup
 setup:
-	@echo "Creating Kind cluster..."
-	kind create cluster --name $(CLUSTER_NAME) --config kind.yml
-	@echo "Installing NGINX Ingress Controller..."
-	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-	@echo "Waiting for Ingress Controller pods to be created..."
-	sleep 30
-	@echo "Waiting for Ingress Controller to be ready..."
-	kubectl wait --namespace ingress-nginx \
-		--for=condition=ready pod \
-		--selector=app.kubernetes.io/component=controller \
-		--timeout=120s || \
-	(echo "Ingress pods status:" && \
-	 kubectl get pods -n ingress-nginx && \
-	 kubectl describe pods -n ingress-nginx && \
-	 exit 1)
+	@echo "Checking if Kind cluster '$(CLUSTER_NAME)' exists..."
+	@if kind get clusters | grep -q "^$(CLUSTER_NAME)$$"; then \
+		echo "Cluster '$(CLUSTER_NAME)' already exists. Skipping creation."; \
+	else \
+		echo "Creating Kind cluster..."; \
+		kind create cluster --name $(CLUSTER_NAME) --config kind.yml; \
+	fi
+	@echo "Checking if NGINX Ingress Controller is installed..."
+	@if kubectl get namespace ingress-nginx > /dev/null 2>&1; then \
+		echo "NGINX Ingress Controller already installed. Skipping installation."; \
+	else \
+		echo "Installing NGINX Ingress Controller..."; \
+		kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml; \
+		echo "Waiting for Ingress Controller pods to be created..."; \
+		sleep 30; \
+		kubectl wait --namespace ingress-nginx \
+			--for=condition=ready pod \
+			--selector=app.kubernetes.io/component=controller \
+			--timeout=120s || \
+		(echo "Ingress pods status:" && \
+		 kubectl get pods -n ingress-nginx && \
+		 kubectl describe pods -n ingress-nginx && \
+		 exit 1); \
+	fi
 	@echo "Verifying Ingress Controller..."
 	kubectl get pods -n ingress-nginx
 
@@ -114,11 +123,11 @@ test:
 	@echo "Checking all resources..."
 	kubectl get pods,svc,ingress
 	@echo "\nWaiting for pods to be ready..."
-	kubectl wait --for=condition=ready pod -l app=$(HELM_RELEASE_NAME) --timeout=150s
-	@echo "\nTesting health endpoint (http://ml-app.localhost:$(HOST_PORT))..."
-	curl -s http://ml-app.localhost:$(HOST_PORT)/
+	kubectl wait --for=condition=ready pod -l app=$(HELM_RELEASE_NAME) --timeout=180s
+	@echo "\nTesting health endpoint (http://ml-app.localhost)..."
+	curl -s http://ml-app.localhost/
 	@echo "\nTesting ML endpoint with test image and saving to k8s-test-output.json..."
-	@curl -s -X POST -F "file=@images/test_car.jpg" http://ml-app.localhost:$(HOST_PORT)/detect > k8s-test-output.json
+	@curl -s -X POST -F "file=@images/test_car.jpg" http://ml-app.localhost/detect > k8s-test-output.json
 	@echo "\nPrediction results saved to k8s-test-output.json"
 	@echo "\nContents of k8s-test-output.json:"
 	@cat k8s-test-output.json | jq '.' || cat k8s-test-output.json
