@@ -1,0 +1,52 @@
+# Exclude Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Exclude virtual environments
+venv/
+.env/
+*.env
+
+# Exclude logs and temporary files
+*.log
+*.tmp
+*.swp
+
+# Exclude local development files
+.idea/
+.vscode/
+*.DS_Store
+
+# Exclude test files and folders
+tests/
+*.pytest_cache/
+coverage/
+coverage.xml
+*.cover
+
+# Exclude files for local setups
+local_settings.py
+
+# Exclude unnecessary model or data files
+data/
+models/
+
+# Exclude Docker-related temporary files
+Dockerfile.*
+docker-compose.yml
+*.dockerignore
+
+# Exclude build artifacts
+build/
+dist/
+*.egg-info/
+*.whl
+
+# Exclude Helm-related files (if not needed in the image)
+helm/
+
+# Exclude Git-related files
+.git/
+*.gitignore
