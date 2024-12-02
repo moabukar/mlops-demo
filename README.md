@@ -1,4 +1,4 @@
-# 🤖 ML Tech Test
+# 🤖 MLOps Demo
 
 ## 🎯 What is this?
 
