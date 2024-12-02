@@ -1,0 +1,31 @@
+name: Publish Helm Chart
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-helm-chart:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.12.0
+
+    - name: Package Helm Chart
+      run: |
+        cd chart
+        helm package .
+        helm repo index . --url https://moabukar.github.io/mlops-demo
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: chart
