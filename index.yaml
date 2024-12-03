@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   ml-web-service:
   - apiVersion: v2
-    created: "2024-12-02T23:42:37.033152Z"
+    created: "2024-12-02T23:59:18.503366Z"
     description: A Helm chart for deploying the YOLOv8 FastAPI app
-    digest: af56c3ee9a47cb0fb2a345d6f98efcb86a4433ad9d5d16d418de39f5a1cff3c5
+    digest: fd4915b2d41d7e945e5e1aae1413ecca8cc92b2f6749e6f3709c65761a032952
     name: ml-web-service
     urls:
-    - https://moabukar.github.io/mlops-demo/ml-web-service-0.1.1.tgz
+    - ml-web-service-0.1.1.tgz
     version: 0.1.1
-generated: "2024-12-02T23:42:37.032906Z"
+generated: "2024-12-02T23:59:18.503147Z"
