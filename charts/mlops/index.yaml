@@ -8,5 +8,5 @@ entries:
     name: ml-web-service
     urls:
     - https://moabukar.github.io/mlops-demo/ml-web-service-0.1.1.tgz
-    version: 0.1.1
+    version: 0.1.2
 generated: "2024-12-02T23:51:54.383281Z"
