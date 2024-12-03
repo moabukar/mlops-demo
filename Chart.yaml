@@ -1,0 +1,4 @@
+apiVersion: v2
+name: ml-web-service
+description: A Helm chart for deploying the YOLOv8 FastAPI app
+version: 0.1.1
